@@ -1,0 +1,23 @@
+GQL_DOC_ID Explanation
+======================
+
+The `GQL_DOC_ID = "8845758582119845"` is a GraphQL document ID used by Instagram's internal API.
+
+What it is:
+- A unique identifier that references a pre-registered GraphQL query on Instagram's servers
+- The comment `PolarisPostActionLoadPostQueryQuery` is the internal name of that query
+- Instead of sending the full GraphQL query text, Instagram's API accepts this numeric ID as a shorthand
+
+How it's used:
+In di.py line 58, it's sent as `doc_id` in the POST request to Instagram's GraphQL endpoint:
+    data={"av": "0", "doc_id": GQL_DOC_ID, "variables": variables}
+
+Why this approach:
+- Instagram pre-compiles and registers their GraphQL queries server-side
+- Clients just reference them by ID, which is faster and prevents arbitrary query injection
+- This is a common pattern called "persisted queries" in GraphQL
+
+The catch:
+These IDs are not publicly documented and can change when Instagram updates their frontend.
+If the script stops working, this ID likely needs to be updated by inspecting network requests
+on instagram.com.
